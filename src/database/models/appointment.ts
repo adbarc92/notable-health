@@ -17,12 +17,12 @@ export class Appointment {
   @Column({ type: 'timestamp' })
   time!: Date;
 
-  @Column()
+  @Column({ type: 'text' })
   patientFirstName!: string;
 
-  @Column()
+  @Column({ type: 'text' })
   patientLastName!: string;
 
-  @Column()
+  @Column({ type: 'text' })
   type!: 'NEW PATIENT' | 'FOLLOW UP';
 }

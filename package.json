@@ -2,13 +2,13 @@
   "name": "notable-health",
   "version": "1.0.0",
   "description": "A tech interview for Notable Health.",
-  "main": "index.js",
+  "main": "index.ts",
   "repository": "https://github.com/adbarc92/notable-health.git",
   "author": "adbarc92 <adbarclay92@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./index.ts"
+    "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
     "dotenv": "^16.0.2",

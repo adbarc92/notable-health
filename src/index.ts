@@ -4,6 +4,8 @@ import path from 'path';
 
 import { initConnection } from './database';
 
+import DoctorsController from './controllers/doctors.controller';
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -22,7 +24,7 @@ const init = async () => {
     const connection = await initConnection();
 
     if (connection) {
-      /* Add controllers here */
+      app.use(DoctorsController(connection))
     } else {
       throw new Error('Connection could not be established');
     }

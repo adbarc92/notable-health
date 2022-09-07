@@ -6,13 +6,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const typeOrmConfig: PostgresConnectionOptions = {
-  name: process.env.DB_CONNECTION_NAME,
+  name: process.env.DB_CONNECTION_NAME || 'default',
   type: 'postgres',
-  host: process.env.DB_HOST,
+  host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_NAME || 'outlinear',
+  database: process.env.DB_NAME || 'notable_health',
   synchronize: true,
   logging: false,
   extra: {

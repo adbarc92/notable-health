@@ -14,9 +14,9 @@ export class Doctor {
   @OneToMany(() => Appointment, (appointment: Appointment) => appointment.doctor)
   appointments!: Appointment[];
 
-  @Column()
+  @Column({ type: 'text' })
   firstName!: string;
 
-  @Column()
+  @Column({ type: 'text' })
   lastName!: string;
 }

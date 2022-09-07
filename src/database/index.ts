@@ -2,13 +2,13 @@ import { ConnectionManager, Connection } from 'typeorm';
 
 import typeOrmConfig from './config';
 
-/* Add Models here */
+import { Doctor, Appointment } from './models';
 
 const connectionManager = new ConnectionManager();
 
 const connection = connectionManager.create({
   ...typeOrmConfig,
-  entities: [/* Add entities here */]
+  entities: [ Doctor, Appointment ]
 });
 
 export const initConnection = async (): Promise<Connection | null> => {
