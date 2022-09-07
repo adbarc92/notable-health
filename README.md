@@ -7,7 +7,15 @@ This is done for a take-home assignment for a position at Notable Health.
 3. Start the server with `yarn start`.
 4. Try it out by making requests to `localhost:4000`.
 
+Endpoints include
+```
+POST, GET /doctors
+POST, GET /doctors/:id/appointments (date as query param)
+DELETE /doctors/:id/appointments/:id
+```
+
 # Changelog
+* Patch 1.0: adds support for doctor and appointment endpoints.
 * Patch 0.1: adds boilerplate code
 
 # Credit
