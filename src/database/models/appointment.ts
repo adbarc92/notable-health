@@ -14,8 +14,8 @@ export class Appointment {
   @ManyToOne(() => Doctor, (doctor: Doctor) => doctor.appointments)
   doctor!: Doctor;
 
-  @Column({ type: 'timestamp' })
-  time!: Date;
+  @Column({ type: 'text' })
+  time!: string;
 
   @Column({ type: 'text' })
   patientFirstName!: string;

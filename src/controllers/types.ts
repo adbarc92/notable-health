@@ -1,20 +1,34 @@
 export interface Appointment {
   id: string;
   doctor: Doctor;
-  time: Date;
+  time: string;
   patientFirstName: string;
   patientLastName: string;
   type: 'NEW PATIENT' | 'FOLLOW UP';
 }
 
-export interface AppointmentGet {
+export interface AppointmentDeleteParams {
   doctorId: string;
-  day: number | string;
+  apptId: string;
 }
 
-export interface AppointmentPost {
-  doctorId: string;
-  time: Date;
+export interface AppointmentGetParams {
+  id: string;
+}
+
+export interface AppointmentGetQuery {
+  date: string;
+}
+
+export interface AppointmentPostParams {
+  id: string;
+}
+
+export interface AppointmentPostBody {
+  time: string;
+  firstName: string;
+  lastName: string;
+  type: 'NEW PATIENT' | 'FOLLOW UP';
 }
 
 export interface Doctor {
