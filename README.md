@@ -18,5 +18,12 @@ DELETE /doctors/:id/appointments/:id
 * Patch 1.0: adds support for doctor and appointment endpoints.
 * Patch 0.1: adds boilerplate code
 
+## Future Releases
+* Individual doctor information retrieval
+* Appointment modification
+* User accounts
+* User authentication
+* User authorization
+
 # Credit
 * Most of the code used here was written by me as part of my [MVP](https://github.com/adbarc92/MVP).
