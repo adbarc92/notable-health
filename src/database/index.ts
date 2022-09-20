@@ -17,6 +17,7 @@ export const initConnection = async (): Promise<Connection | null> => {
     console.debug('Connected!');
     return connection;
   } catch (err) {
+    console.log('It is failing here');
     console.error(err);
     return null;
   }

@@ -43,7 +43,7 @@ export const validateAppointmentFrequency = (newApptTime: string, existingAppts:
     ) {
       sameTimeAppts.push(appt);
     }
-    if (sameTimeAppts.length > 3) {
+    if (sameTimeAppts.length >= 3) {
       return new Error(`Invalid: Doctor ${existingAppts[0].doctor} is booked for time ${normalizeTime(time)}`);
     }
   }
@@ -52,7 +52,7 @@ export const validateAppointmentFrequency = (newApptTime: string, existingAppts:
 
 export const validateAppointmentTime = (time: string): Error | null => {
   if (new Date(time).getMinutes() % 15 !== 0) {
-    return new Error(`Invalid: Appointments can only start at 15-minute intervals (e.g. 8:15AM, 8:30AM, 8:45AM, etc.).`);
+    return new Error('Invalid: appointments can only start at 15-minute intervals (e.g. 8:15AM, 8:30AM, 8:45AM, etc.).');
   }
 
   return null;
@@ -102,6 +102,7 @@ export const validateDate = (date: string): Error | null => {
 };
 
 export const validateAppointmentPost = (time: string, patientFirstName: string, patientLastName: string, type: 'NEW PATIENT' | 'FOLLOW UP'): Error | null => {
+  // TODO: make this validation decent
   if (!time) return new Error("An appointment must have a time.");
   if (!patientFirstName) return new Error("An appointment must have a patient\'s first name.");
   if (!patientLastName) return new Error("An appointment must have a patient\'s last name.");

@@ -7,7 +7,7 @@ import { initConnection } from './database';
 import DoctorsController from './controllers/doctors.controller';
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = 4000;
 
 app.use('*.js', function (req, res, next) {
   req.url = req.url + '.gz';

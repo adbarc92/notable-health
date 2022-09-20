@@ -51,6 +51,44 @@ const DoctorsController = (connection: Connection): Router => {
 
   doctorsRouter
     .route('/doctors/:id/appointments')
+    .post(
+      async function (req: Request<AppointmentPostParams, null, AppointmentPostBody, null>, res: Response) {
+        try {
+          const params = req.params;
+          const id = params?.id;
+
+          const body = req.body;
+          const time = body?.time;
+          const patientFirstName = body?.firstName;
+          const patientLastName = body?.lastName;
+          const type = body?.type;
+
+          validateAppointmentPost(time, patientFirstName, patientLastName, type);
+
+          validateAppointmentTime(time);
+          const doctorRepo = connection.getRepository(Doctor);
+          const doctor = await doctorRepo.findOne({ where: {id}, relations: ['appointments'] });
+          if (!doctor) {
+            return res.status(404).send(`No matching doctor with id ${id} found.`);
+          }
+
+          const appts = doctor.appointments || [];
+
+          validateAppointmentFrequency(time, appts);
+
+          const apptRepo = connection.getRepository(Appointment);
+          const newAppt = apptRepo.create(
+            { doctor, time, patientFirstName, patientLastName, type }
+            );
+          await apptRepo.save(newAppt);
+          const result = await apptRepo.find(); // TODO: Should return newly-made appointment
+
+          res.status(201).send(result[0]);
+        } catch (e) {
+          res.status(400).send(e); // This is for overbooked times
+        }
+      }
+    )
     .get(
       async function (req: Request<AppointmentGetParams, null, null, AppointmentGetQuery>, res: Response) {
         try {
@@ -81,11 +119,15 @@ const DoctorsController = (connection: Connection): Router => {
         }
       }
     )
-    .post(
-      async function (req: Request<AppointmentPostParams, null, AppointmentPostBody, null>, res: Response) {
+
+  doctorsRouter
+    .route('/doctors/:doctorId/appointments/:apptId')
+    .patch(
+      async function(req: Request<AppointmentDeleteParams, null, AppointmentPostBody, null>, res: Response) {
         try {
+
           const params = req.params;
-          const id = params?.id;
+          const apptId = params?.apptId;
 
           const body = req.body;
           const time = body?.time;
@@ -94,34 +136,26 @@ const DoctorsController = (connection: Connection): Router => {
           const type = body?.type;
 
           validateAppointmentPost(time, patientFirstName, patientLastName, type);
-
           validateAppointmentTime(time);
-          const doctorRepo = connection.getRepository(Doctor);
-          const doctor = await doctorRepo.findOne({where: {id}, relations: ['appointments']});
-          if (!doctor) {
-            return res.status(404).send(`No matching doctor with id ${id} found.`);
-          }
 
-          const appts = doctor.appointments || [];
+          const apptsRepo = connection.getRepository(Appointment);
+          const result = await apptsRepo.createQueryBuilder()
+            .update({
+              time,
+              patientFirstName,
+              patientLastName,
+              type,
+            })
+            .where("id = :id", { id: apptId })
+            .returning('*')
+            .execute()
 
-          validateAppointmentFrequency(time, appts);
-
-          const apptRepo = connection.getRepository(Appointment);
-          const newAppt = apptRepo.create(
-            { doctor, time, patientFirstName, patientLastName, type }
-            );
-          await apptRepo.save(newAppt);
-          const result = await apptRepo.find();
-
-          res.status(201).send(result[0]);
-        } catch (e) {
-          res.status(400).send(e);
+          res.status(200).send(result.raw[0]);
+        } catch(e) {
+          res.status(500).send(e);
         }
       }
     )
-
-  doctorsRouter
-    .route('/doctors/:doctorId/appointments/:apptId')
     .delete(
       async function (req: Request<AppointmentDeleteParams, null, null, null>, res: Response) {
         try {
